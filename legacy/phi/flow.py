@@ -1,4 +1,10 @@
-from phi.math.nd import *
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..', '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..', '..', '..'))
+from PDE_Control.legacy.phi.math.nd import *
 import numbers, six, threading, contextlib
 
 
@@ -81,7 +87,7 @@ class FluidSimulation(object):
                 raise ValueError("Illegal boundary: %s" % boundary)
         self.boundary = boundary  # checks rank
         if solver is None:
-            from phi.solver.sparse import SparseCGPressureSolver
+            from PDE_Control.legacy.phi.solver.sparse import SparseCGPressureSolver
             self._solver = SparseCGPressureSolver()
         else:
             self._solver = solver
@@ -293,6 +299,8 @@ If the element type is 'mac', an instanceof StaggeredGrid holding the array is r
     def with_boundary_conditions(self, velocity):
         if self._velocity_mask is None:
             return velocity
+        #print(velocity.shape)
+        #print(self._velocity_mask.shape)
         masked = velocity * self._velocity_mask
         return masked if self._boundary_velocity is None else masked + self._boundary_velocity
 
@@ -308,8 +316,10 @@ Calculates the pressure from the given velocity or velocity divergence using the
         """
         if isinstance(input, StaggeredGrid):
             input = input.divergence()
+            #print("INPUT: ", input)
         if input.shape[-1] == len(self.dimensions):
             input = divergence(input, difference="central")
+            #print("INPUT: ", input)
 
         solver = self._solver if solver is None else solver
         return solver.solve(input, self._active_mask, self._fluid_mask, self._boundary, accuracy, pressure_guess=None, **kwargs)

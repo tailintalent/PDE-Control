@@ -1,5 +1,5 @@
 import numpy as np
-import phi.math as math
+import PDE_Control.legacy.phi.math as math
 
 
 def spatial_rank(tensor_or_mac):
@@ -374,6 +374,7 @@ class StaggeredGrid:
             diff = self.staggered[[slice(None)] + upper_slices + [comp]] - \
                    self.staggered[[slice(None)] + lower_slices + [comp]]
             components.append(diff)
+        #print(components)
         return math.expand_dims(math.add(components), -1)
 
     def abs(self):
@@ -554,6 +555,11 @@ class StaggeredGrid:
             return StaggeredGrid(self.staggered + other)
 
     def __sub__(self, other):
+        #try:
+        #    isinstance(other, StaggeredGrid)
+        #    return StaggeredGrid(self.staggered - other.staggered)
+        #except SystemError: 
+        #    pass
         if isinstance(other, StaggeredGrid):
             return StaggeredGrid(self.staggered - other.staggered)
         else:

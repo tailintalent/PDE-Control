@@ -1,7 +1,7 @@
 import numpy, os
 import plotly.figure_factory as ff
 
-import phi.math.nd
+import PDE_Control.legacy.phi.math.nd
 
 # Views
 FRONT = 'front'
@@ -185,6 +185,8 @@ class PlotlyFigureBuilder(object):
             import matplotlib.pyplot as plt
             fig = plt.figure()
             plt.imshow(z, cmap='bwr', origin='lower')
+            #fig = plt.imread(z)
+            #plt.imshow(fig)
             return fig
         else:
             raise NotImplementedError()

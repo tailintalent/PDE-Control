@@ -1,7 +1,7 @@
-from phi.math.base import DynamicBackend
+from PDE_Control.legacy.phi.math.base import DynamicBackend
 backend = DynamicBackend()
 
-from phi.math.scipy_backend import SciPyBackend
+from PDE_Control.legacy.phi.math.scipy_backend import SciPyBackend
 backend.backends.append(SciPyBackend())
 
 

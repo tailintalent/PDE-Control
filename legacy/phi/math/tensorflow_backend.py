@@ -2,7 +2,7 @@ import tensorflow as tf
 from numpy import ndarray
 import collections
 import uuid
-from phi.math.base import Backend
+from PDE_Control.legacy.phi.math.base import Backend
 
 
 class TFBackend(Backend):

@@ -1,6 +1,12 @@
+import sys
+import os
 import scipy, scipy.sparse, scipy.sparse.linalg
-from phi.math.nd import *
-from phi.solver.base import ExplicitBoundaryPressureSolver, conjugate_gradient
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..', '..'))
+sys.path.append(os.path.join(os.path.dirname("__file__"), '..', '..', '..', '..'))
+from PDE_Control.legacy.phi.math.nd import *
+from PDE_Control.legacy.phi.solver.base import ExplicitBoundaryPressureSolver, conjugate_gradient
 
 
 class SparseSciPyPressureSolver(ExplicitBoundaryPressureSolver):
@@ -99,6 +105,8 @@ class SparseCGPressureSolver(ExplicitBoundaryPressureSolver):
             A = tf.SparseTensor(indices=sidx, values=sval_data, dense_shape=[N, N])
         else:
             A = sparse_pressure_matrix(dimensions, active_mask, fluid_mask)
+            #print(A.shape, A.dtype)
+            #print(A)
 
         if self.autodiff:
             pressure, iter = sparse_cg(divergence, A, max_iterations, pressure_guess, accuracy, back_prop=True)
@@ -123,6 +131,10 @@ def sparse_cg(divergence, A, max_iterations, guess, accuracy, back_prop=False):
     div_vec = math.reshape(divergence, [-1, int(np.prod(divergence.shape[1:]))])
     if guess is not None:
         guess = math.reshape(guess, [-1, int(np.prod(divergence.shape[1:]))])
+    #print(divergence.dtype)
+    #print("Div_vec: ", div_vec[0])
+    #print("GUESS ", guess)
+    #print(A)
     apply_A = lambda pressure: math.matmul(A, pressure)
     result_vec, iterations = conjugate_gradient(div_vec, apply_A, guess, accuracy, max_iterations, back_prop)
     return math.reshape(result_vec, math.shape(divergence)), iterations

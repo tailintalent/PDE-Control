@@ -2,8 +2,8 @@
 from __future__ import print_function
 import logging, os, numbers, six, numpy, threading, inspect, time
 from os.path import isfile
-import phi.fluidformat, phi.math.nd
-from phi.viz.plot import PlotlyFigureBuilder
+import PDE_Control.legacy.phi.fluidformat, phi.math.nd
+from PDE_Control.legacy.phi.viz.plot import PlotlyFigureBuilder
 
 
 def synchronized_method(method):

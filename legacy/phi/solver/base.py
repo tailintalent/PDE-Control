@@ -1,5 +1,5 @@
 # coding=utf-8
-from phi.math.nd import *
+from PDE_Control.legacy.phi.math.nd import *
 
 
 def create_mask(divergence_tensor):
@@ -71,7 +71,7 @@ The implementation is based on https://nvlpubs.nist.gov/nistpubs/jres/049/jresv4
         x = initial_x
         momentum = k - apply_A(x)
     residual = momentum
-
+    #print("MOMENTUM: ", momentum)
     laplace_momentum = apply_A(momentum)
     loop_index = 0
 
