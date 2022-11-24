@@ -336,8 +336,8 @@ class StaggeredGrid:
         for d in dims:  # z,y,x
             upper_slices = [(slice(1, None) if i == d else slice(-1)) for i in dims]
             lower_slices = [(slice(-1) if i == d else slice(-1)) for i in dims]
-            sum = self.staggered[[slice(None)] + upper_slices + [rank - d - 1]] +\
-                  self.staggered[[slice(None)] + lower_slices + [rank - d - 1]]
+            sum = self.staggered[tuple([slice(None)] + upper_slices + [rank - d - 1])] +\
+                  self.staggered[tuple([slice(None)] + lower_slices + [rank - d - 1])]
             df_dq.append(sum / rank)
         return math.stack(df_dq[::-1], axis=-1)
 
@@ -371,8 +371,8 @@ class StaggeredGrid:
             comp = self.spatial_rank - dimension - 1
             upper_slices = [(slice(1, None) if i == dimension else slice(-1)) for i in dims]
             lower_slices = [(slice(-1) if i == dimension else slice(-1)) for i in dims]
-            diff = self.staggered[[slice(None)] + upper_slices + [comp]] - \
-                   self.staggered[[slice(None)] + lower_slices + [comp]]
+            diff = self.staggered[tuple([slice(None)] + upper_slices + [comp])] - \
+                   self.staggered[tuple([slice(None)] + lower_slices + [comp])]
             components.append(diff)
         #print(components)
         return math.expand_dims(math.add(components), -1)
@@ -615,7 +615,7 @@ class StaggeredGrid:
         for dimension in dims:
             upper_slices = [(slice(1, None) if i==dimension else slice(1, None)) for i in dims]
             lower_slices = [(slice(-1)      if i==dimension else slice(1, None)) for i in dims]
-            diff = field[[slice(None)]+upper_slices] - field[[slice(None)]+lower_slices]
+            diff = field[tuple([slice(None)]+upper_slices)] - field[tuple([slice(None)]+lower_slices)]
             df_dq.append(diff)
         return StaggeredGrid(math.concat(df_dq[::-1], axis=-1))
 

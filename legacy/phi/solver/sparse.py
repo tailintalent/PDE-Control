@@ -54,10 +54,10 @@ of that field, taking into account obstacles and empty cells.
         center_indices = [slice(None)] + [slice(1, -1) if i == dim else slice(1, -1) for i in dims] + [slice(None)]
         lower_indices = [slice(None)] + [slice(0, -2) if i == dim else slice(1, -1) for i in dims] + [slice(None)]
 
-        self_active = extended_active_mask[center_indices]
-        stencil_upper = extended_active_mask[upper_indices] * self_active
-        stencil_lower = extended_active_mask[lower_indices] * self_active
-        stencil_center = - extended_fluid_mask[upper_indices] - extended_fluid_mask[lower_indices]
+        self_active = extended_active_mask[tuple(center_indices)]
+        stencil_upper = extended_active_mask[tuple(upper_indices)] * self_active
+        stencil_lower = extended_active_mask[tuple(lower_indices)] * self_active
+        stencil_center = - extended_fluid_mask[tuple(upper_indices)] - extended_fluid_mask[tuple(lower_indices)]
 
         if center_values is None:
             center_values = math.flatten(stencil_center)

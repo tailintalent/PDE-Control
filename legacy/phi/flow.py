@@ -476,8 +476,8 @@ DomainBoundary([False, (False, True), False]) - creates a 3D boundary with an op
         for d in dims:
             upper_slices = [(slice(1, None) if i == d else slice(1, None)) for i in dims]
             lower_slices = [(slice(0, -1) if i == d else slice(1, None)) for i in dims]
-            bc_d = math.minimum(fluid_mask[[slice(None)] + upper_slices + [slice(None)]],
-                                    fluid_mask[[slice(None)] + lower_slices + [slice(None)]])
+            bc_d = math.minimum(fluid_mask[tuple([slice(None)] + upper_slices + [slice(None)])],
+                                    fluid_mask[tuple([slice(None)] + lower_slices + [slice(None)])])
             bcs.append(bc_d)
         return StaggeredGrid(math.concat(bcs[::-1], axis=-1))
 
